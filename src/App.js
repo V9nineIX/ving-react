@@ -18,18 +18,29 @@ class App extends Component {
   }
 
 
-  getQuery = async () =>{
-    const Tags = new Loopback('Tags')
-    let  res  =  await Tags._query() ;
-    console.log("res" , res);
-
-  }
+  // getQuery = async () =>{
+  //   const Tags = new Loopback('Tags')
+  //   let  res  =  await Tags._query() ;
+  //   console.log("res" , res);
+  //
+  // }
 
 
   render() {
     const Tags = new Loopback('Tags');
     console.log("get  model:",Tags.getModel());
-    console.log("Url :",Tags.find({where: {name: 'John'}, limit: 3}));
+    Tags.find()
+    .then((t)=>{
+      console.log("Tags find:",t);
+    })
+    Tags.findOne()
+    .then((t)=>{
+      console.log("Tags findOne:",t);
+    })
+    Tags.findById('5b6a99efee55d86162f1a7e7',{})
+    .then((t)=>{
+      console.log("Tags findById:",t);
+    })
     return (
       <div className="App">
          test Ving
