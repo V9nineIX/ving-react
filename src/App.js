@@ -20,16 +20,17 @@ class App extends Component {
 
   getQuery = async () =>{
     const Tags = new Loopback('Tags')
-    let  res  =  await Tags._query() ;
+    let  res  =  await Tags.find() ;
     console.log("res" , res);
 
   }
 
 
   render() {
-    const Tags = new Loopback('Tags');
-    console.log("get  model:",Tags.getModel());
-    console.log("Url :",Tags.find({where: {name: 'John'}, limit: 3}));
+    // const Tags = new Loopback('Tags');
+    // console.log("get  model:",Tags.getModel());
+    // console.log("Url :",Tags.find({where: {name: 'John'}, limit: 3})); 
+    this.getQuery();
     return (
       <div className="App">
          test Ving

@@ -41,19 +41,44 @@ export class Loopback {
     return url;
   }
 
-  _query = async ()  =>{
-     let url = this._getBaseUrl()+this.getModel();
-     const res = await axios.get(url ,{
-        headers: { Authorization: `Bearer ${config.get("token")}` },
-      })
-      return{
-         status :res.status,
-         data : res.data
+  /**
+  * query  api by axios.
+  * @param  {object} options  option param for query api ,method ,url ,data
+  * @return {Promise}  promise
+  */
+  _query = async (options = { 
+                  method : "get",
+                  url: "",
+                  data : {}
+                 }) => {
+
+    let res = null;
+    let errorMsg = null
+    let returnData = {};
+
+    try {
+      res = await axios(options)
+    } catch (error) {
+      errorMsg =  error;
+    }
+
+    if (errorMsg == null) {
+      returnData = {
+        status: res.status,
+        data: res.data,
+      }
+    } else {
+      returnData = {
+        error: errorMsg
       }
     }
 
-  find(query){
-    return this._buildUrl(query);
+    return returnData;
+
+  }
+
+  find (query){
+  return this._query({ method : 'get' , url : this._buildUrl(query)});
   }
 
 }
