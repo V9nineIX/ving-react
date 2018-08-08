@@ -54,6 +54,7 @@ export class Loopback {
     method: "get",
     url: "",
     data: {},
+  //  headers: { Authorization: `Bearer NNCu93eK5idj5fITV0zEb8zujYSXK0UeAG037aJSHwcNvPRHgekpnWwkgd9qygD8` },
   }) => {
     let res = null;
     let errorMsg = null
@@ -92,6 +93,22 @@ export class Loopback {
       method: 'get',
       url: this._buildUrl(query, `/${id}`),
     });
+  }
+   
+  create = (data) => {
+    return  this._query({
+      method: 'post' ,
+      url:this._buildUrl(),
+      data : data
+    })
+  }
+
+  update = (data) => {
+    return  this._query({
+      method: 'patch' ,
+      url:this._buildUrl(),
+      data : data
+    })
   }
 }
 // export default new Loopback();
