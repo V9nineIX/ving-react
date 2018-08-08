@@ -18,6 +18,14 @@ class App extends Component {
   }
 
 
+  getQuery = async () =>{
+    const Tags = new Loopback('Tags')
+    let  res  =  await Tags._query() ;
+    console.log("res" , res);
+
+  }
+
+
   render() {
     const Tags = new Loopback('Tags');
     console.log("get  model:",Tags.getModel());

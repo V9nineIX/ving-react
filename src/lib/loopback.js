@@ -5,9 +5,9 @@ import config from './config';
 
 export class Loopback {
 
-  constructor(name) {
-    console.log('Loopback constructor',name);
-    this.name = name;
+  constructor(model) {
+   // console.log('Loopback constructor',name);
+    this.model = model;
   }
 
   _getBaseUrl() {
@@ -19,7 +19,18 @@ export class Loopback {
       }
 
   getModel(){
-    return this.name
+    return this.model
+  }
+
+  _query = async ()  =>{
+   let url = this._getBaseUrl()+this.getModel();
+   const res = await axios.get(url ,{
+      headers: { Authorization: `Bearer ${config.get("token")}` },
+    })
+    return{
+       status :res.status,
+       data : res.data
+    }
   }
 
 }
