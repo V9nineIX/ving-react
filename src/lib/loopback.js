@@ -41,6 +41,17 @@ export class Loopback {
     return url;
   }
 
+  _query = async ()  =>{
+     let url = this._getBaseUrl()+this.getModel();
+     const res = await axios.get(url ,{
+        headers: { Authorization: `Bearer ${config.get("token")}` },
+      })
+      return{
+         status :res.status,
+         data : res.data
+      }
+    }
+
   find(query){
     return this._buildUrl(query);
   }
