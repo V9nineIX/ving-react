@@ -1,25 +1,48 @@
 import axios from 'axios'
 import config from './config';
-
-
-
 export class Loopback {
-
   constructor(name) {
-    console.log('Loopback constructor',name);
+    console.log('Loopback constructor', name);
     this.name = name;
   }
-
-  _getBaseUrl() {
-        let baseUrl = config.get('baseUrl') || '';
-        if (baseUrl.slice(-1) !== '/') {
-          baseUrl += '/';
-        }
-        return baseUrl;
-      }
-
-  getModel(){
+  getModel() {
     return this.name
+  }
+  /**
+ * Get baseUrl from config and make sure there is a slash at the end.
+ * @return {string} The API base URL
+ */
+  _getBaseUrl() {
+    let baseUrl = config.get('baseUrl') || '';
+    if (baseUrl.slice(-1) !== '/') {
+      baseUrl += '/';
+    }
+    return baseUrl;
+  }
+  /**
+ * Given the endpoint and its filter, this will build the full
+ * URL to query Loopback
+ * @param  {object} filter   Filter object
+ * @return {string}          Loopback URL
+ */
+  _buildUrl(filter) {
+    const baseUrl = this._getBaseUrl();
+    let url = baseUrl + this.name
+    if (filter) {
+      url += '?filter=' + encodeURIComponent(JSON.stringify(filter));
+    }
+    const token = config.get('access_token') || '';
+    if (token) {
+      url += filter
+        ? '&'
+        : '?';
+      url += 'access_token=' + token;
+    }
+    return url;
+  }
+
+  find(query){
+    return this._buildUrl(query);
   }
 
 }

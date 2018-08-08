@@ -21,7 +21,7 @@ class App extends Component {
   render() {
     const Tags = new Loopback('Tags');
     console.log("get  model:",Tags.getModel());
-    console.log("baseUrl :",Tags._getBaseUrl());
+    console.log("Url :",Tags.find({where: {name: 'John'}, limit: 3}));
     return (
       <div className="App">
          test Ving
