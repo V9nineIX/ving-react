@@ -37,7 +37,7 @@ class App extends Component {
     .then((t)=>{
       console.log("Tags findOne:",t);
     })
-    Tags.findById('5b6a99efee55d86162f1a7e7',{})
+    Tags.findById('5b6a99efee55d86162f1a7e7',{"where": [{"name": {"inq": ["cat"]}},{"status": "active"}]})
     .then((t)=>{
       console.log("Tags findById:",t);
     })
