@@ -29,11 +29,10 @@ export class Loopback {
   _buildUrl(filter, action) {
     const baseUrl = this._getBaseUrl();
     let load = '';
-    if(!!action){
+    if (!!action) {
       load = action
     }
     let url = baseUrl + this.name + load
-
     if (filter) {
       url += '?filter=' + encodeURIComponent(JSON.stringify(filter));
     }
@@ -44,50 +43,55 @@ export class Loopback {
         : '?';
       url += 'access_token=' + token;
     }
-    console.log(action,load);
-    console.log(url);
     return url;
   }
-
-  _query = async ()  =>{
-     let url = this._getBaseUrl()+this.getModel();
-     const res = await axios.get(url ,{
-        headers: { Authorization: `Bearer ${config.get("token")}` },
-      })
-      return{
-         status :res.status,
-         data : res.data
+  /**
+  * query  api by axios.
+  * @param  {object} options  option param for query api ,method ,url ,data
+  * @return {Promise}  promise
+  */
+  _query = async(options = {
+    method: "get",
+    url: "",
+    data: {},
+  }) => {
+    let res = null;
+    let errorMsg = null
+    let returnData = {};
+    try {
+      res = await axios(options)
+    } catch (error) {
+      errorMsg = error;
+    }
+    if (errorMsg == null) {
+      returnData = {
+        status: res.status,
+        data: res.data
+      }
+    } else {
+      returnData = {
+        error: errorMsg
       }
     }
-
-
-find = async (query)=>{
-    const res = await axios.get(this._buildUrl(query) ,{
-       headers: {},
-     })
-     return{
-        status :res.status,
-        data : res.data
-     }
+    return returnData;
   }
-
-  findOne = async (query)=>{
-    const res = await axios.get(this._buildUrl(query,"/findone") ,{
-       headers: {},
-     })
-     return{
-        status :res.status,
-        data : res.data
-     }
+  find(query) {
+    return this._query({
+      method: 'get',
+      url: this._buildUrl(query),
+    });
   }
-  findById = async (id,query)=>{
-    const res = await axios.get(this._buildUrl(query,`/${id}`) ,{
-       headers: {},
-     })
-     return{
-        status :res.status,
-        data : res.data
-     }
+  findOne = async(query) => {
+    return this._query({
+      method: 'get',
+      url: this._buildUrl(query, `/findone`),
+    });
+  }
+  findById = async(id, query) => {
+    return this._query({
+      method: 'get',
+      url: this._buildUrl(query, `/${id}`),
+    });
   }
 }
 // export default new Loopback();
